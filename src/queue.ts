@@ -6,7 +6,7 @@ export { DRRData } from './drr-queue';
 
 const MAX_SAFE_INTEGER = 9007199254740991;
 
-abstract class BlockingQueue<T, W> {
+export abstract class BlockingQueue<T, W> {
     private   _queue: BackingQueue<T, W>;
     protected _capacity: number;
     private   _readCondition  = new Condition();
@@ -46,11 +46,11 @@ abstract class BlockingQueue<T, W> {
 
     async pushOrWait(data: W): Promise<number>;
     async pushOrWait(data: W, timeout: number): Promise<number | undefined>;
-    async pushOrWait(data: W, timeout = MAX_SAFE_INTEGER): Promise<number | undefined> {
-        const expires = Date.now() + timeout;
+    async pushOrWait(data: W, timeout?: number): Promise<number | undefined> {
+        const expires = timeout !== undefined ? Date.now() + timeout : undefined;
 
         // Wait until there is space for more, or timeout
-        while (this.isFull() && await this._writeCondition.wait(expires - Date.now()));
+        while (this.isFull() && await this._writeCondition.wait(expires && expires - Date.now()));
 
         return this.isFull() ? undefined /* Timeout */ : this.push(data);
     }
@@ -65,11 +65,11 @@ abstract class BlockingQueue<T, W> {
 
     async shiftOrWait(): Promise<T>;
     async shiftOrWait(timeout: number): Promise<T | undefined>;
-    async shiftOrWait(timeout = MAX_SAFE_INTEGER): Promise<T | undefined> {
-        const expires = Date.now() + timeout;
+    async shiftOrWait(timeout?: number): Promise<T | undefined> {
+        const expires = timeout !== undefined ? Date.now() + timeout : undefined;
 
         // Wait until there is something to read, or timeout
-        while (this.isEmpty() && await this._readCondition.wait(expires - Date.now()));
+        while (this.isEmpty() && await this._readCondition.wait(expires && expires - Date.now()));
 
         return this.isEmpty() ? undefined /* Timeout */ : this.shift();
     }
