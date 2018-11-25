@@ -1,0 +1,28 @@
+{
+  "include": ["src/*.ts", "test/*.ts"],
+  "compilerOptions": {
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "declaration": true,
+    "outDir": "./lib",
+    "target": "es5",
+    "lib": [ "es5", "dom", "es2015.promise" ],
+
+    "downlevelIteration": true,
+    "importHelpers": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "preserveSymlinks": true,
+    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+
+    "alwaysStrict": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strict": true,
+  }
+}

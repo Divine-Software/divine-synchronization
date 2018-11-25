@@ -1,0 +1,19 @@
+{
+  "name": "@divine/synchronization",
+  "version": "1.0.0",
+  "description": "The Divine Synchronization Library",
+  "main": "lib/src/index.js",
+  "types": "lib/src/index.d.ts",
+  "repository": "https://github.com/LeviticusMB/divine-synchronization",
+  "bugs": "https://github.com/LeviticusMB/divine-synchronization/issues",
+  "author": "Martin Blom <martin@blom.org>",
+  "license": "MIT",
+  "dependencies": {
+    "denque": "^1.4.0",
+    "tslib": "^1.9.3"
+  },
+  "devDependencies": {
+    "alsatian": "alpha",
+    "typescript": "^3.1.6"
+  }
+}
