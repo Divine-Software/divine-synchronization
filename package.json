@@ -14,6 +14,7 @@
   },
   "devDependencies": {
     "alsatian": "alpha",
+    "nyc": "^13.1.0",
     "typescript": "^3.1.6"
   }
 }

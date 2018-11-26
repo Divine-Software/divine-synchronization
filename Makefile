@@ -1,7 +1,7 @@
 all:		test
 
 clean:
-	rm -rf lib node_modules
+	rm -rf lib node_modules coverage .nyc_output
 
 prepare:
 	yarn
@@ -10,7 +10,8 @@ build:		prepare
 	yarn run tsc
 
 test:		build
-	yarn run alsatian lib/test/*.js
+	yarn run nyc --reporter=lcov --reporter=html alsatian lib/test/*.js
+	yarn run nyc report
 
 publish:	clean build test
 	@[[ -z "$$(git status --porcelain)" && "$$(git describe)" =~ ^v[0-9]+\.[0-9]+\.[0-9]$$ ]] || (git describe; git status; false)
