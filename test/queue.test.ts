@@ -132,8 +132,8 @@ export class MoreBlockingFairQueueTest {
         Expect(q.shift()).toBe(undefined); // The writer should not have been scheduled yet
 
         Expect(await q.shiftOrWait()).toBe('one');
-        Expect(await q.shiftOrWait()).toBe('two');
         Expect(await q.shiftOrWait()).toBe('three');
+        Expect(await q.shiftOrWait()).toBe('two');
         Expect(await q.shiftOrWait(100)).toBe(undefined);
     }
 }
