@@ -22,16 +22,18 @@ export class QueueTest {
 
         Expect(q.shift()).toBe(undefined);
         Expect(q.length).toBe(0);
+
+        Expect(() => q.push(undefined as any)).toThrowError(TypeError, `Queue cannot contain 'undefined' elements`);
     }
 }
 
 export class FairQueueTest {
-    @Test() normalOrder() {
-        new DRRQueueTest().normalOrder(new FairQueue());
+    @Test() normalFairQueueOrder() {
+        new DRRQueueTest().normalDRRQueueOrder(new FairQueue());
     }
 
-    @Test() fairOrder() {
-        new DRRQueueTest().fairOrder(new FairQueue());
+    @Test() fairFairQueueOrder() {
+        new DRRQueueTest().fairDRRQueueOrder(new FairQueue());
     }
 }
 

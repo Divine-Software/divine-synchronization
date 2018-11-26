@@ -2,6 +2,12 @@ import { Test, Expect } from 'alsatian';
 import { Signal, FairSignal } from '../src/condition';
 
 export class SignalTest {
+    @Test() async sendUndefined() {
+        const signal = new Signal<string>();
+
+        Expect(() => signal.notify(undefined as any)).toThrowError(TypeError, `Signal cannot send 'undefined'`);
+    }
+
     @Test() async wakeOne() {
         const signal = new Signal<string>();
 
