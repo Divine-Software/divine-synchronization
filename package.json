@@ -8,6 +8,9 @@
   "bugs": "https://github.com/LeviticusMB/divine-synchronization/issues",
   "author": "Martin Blom <martin@blom.org>",
   "license": "MIT",
+  "scripts": {
+    "test": "make test"
+  },
   "dependencies": {
     "denque": "^1.4.0",
     "tslib": "^1.9.3"
