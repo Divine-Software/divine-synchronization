@@ -15,6 +15,10 @@
   "devDependencies": {
     "alsatian": "alpha",
     "nyc": "^13.1.0",
+    "rollup": "^0.67.3",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
+    "rollup-plugin-sourcemaps": "^0.4.2",
     "typescript": "^3.1.6"
   }
 }

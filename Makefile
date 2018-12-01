@@ -8,6 +8,7 @@ prepare:
 
 build:		prepare
 	yarn run tsc
+	yarn run rollup -c rollup.config.js --format umd --file lib/bundle.umd.js
 
 test:		build
 	yarn run nyc --reporter=lcov --reporter=html alsatian lib/test/*.js
