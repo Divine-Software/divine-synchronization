@@ -17,6 +17,7 @@
   },
   "devDependencies": {
     "alsatian": "alpha",
+    "coveralls": "^3.0.2",
     "nyc": "^13.1.0",
     "rollup": "^0.67.3",
     "rollup-plugin-commonjs": "^9.2.0",
