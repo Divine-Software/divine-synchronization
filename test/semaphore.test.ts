@@ -75,3 +75,28 @@ export class FairMutexTest {
                          (mutex: any, cb: () => Promise<void>) => (mutex as FairMutex).protect('id', cb));
      }
 }
+
+export class SemaphoreTest {
+    @Test() async timeoutTest() {
+        const sema = new Semaphore(2);
+
+        await sema.wait();
+        await sema.wait();
+        Expect(await sema.wait(100)).toBe(false);
+
+        const t1 = sema.wait(100);
+        const w1 = sema.wait();
+        Expect(await t1).toBe(false);
+        sema.signal(); // Wake w1
+        await w1;
+
+        const w2a = sema.wait();
+        const t2  = sema.wait(100);
+        const w2b = sema.wait();
+        Expect(await t2).toBe(false);
+        sema.signal(); // Wake w2a
+        sema.signal(); // Wake w2b
+        await w2a;
+        await w2b;
+    }
+}
