@@ -26,8 +26,8 @@ export class Semaphore {
         }
     }
 
-    async wait(): Promise<true>;
-    async wait(timeout?: number): Promise<boolean>;
+    wait(): Promise<true>;
+    wait(timeout?: number): Promise<boolean>;
     async wait(timeout?: number): Promise<boolean> {
         if (--this._value < 0) {
             if (!await this._cond.wait(timeout)) {
@@ -98,8 +98,8 @@ export class FairSemaphore {
         }
     }
 
-    async wait(id: string): Promise<true>;
-    async wait(id: string, timeout?: number): Promise<boolean>;
+    wait(id: string): Promise<true>;
+    wait(id: string, timeout?: number): Promise<boolean>;
     async wait(id: string, timeout?: number): Promise<boolean> {
         if (--this._value < 0) {
             if (!await this._cond.wait(id, timeout)) {

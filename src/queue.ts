@@ -46,8 +46,8 @@ export abstract class BlockingQueue<T, W> {
         return this._queue.push(data);
     }
 
-    async pushOrWait(data: W): Promise<number>;
-    async pushOrWait(data: W, timeout?: number): Promise<number | undefined>;
+    pushOrWait(data: W): Promise<number>;
+    pushOrWait(data: W, timeout?: number): Promise<number | undefined>;
     async pushOrWait(data: W, timeout?: number): Promise<number | undefined> {
         const expires = timeout !== undefined ? Date.now() + timeout : undefined;
 
@@ -65,8 +65,8 @@ export abstract class BlockingQueue<T, W> {
         return this._queue.shift();
     }
 
-    async shiftOrWait(): Promise<T>;
-    async shiftOrWait(timeout?: number): Promise<T | undefined>;
+    shiftOrWait(): Promise<T>;
+    shiftOrWait(timeout?: number): Promise<T | undefined>;
     async shiftOrWait(timeout?: number): Promise<T | undefined> {
         const expires = timeout !== undefined ? Date.now() + timeout : undefined;
 

@@ -87,11 +87,13 @@ export class FairSignal<T> extends SignalBase<T, DRRData<Waiter<T>>> {
     wait(id: string): Promise<T>;
     wait(id: string, timeout?: number): Promise<T | undefined>;
     wait(id: string, timeout?: number): Promise<T | undefined> {
-        if (typeof id !== 'string') {
-            throw new TypeError(`Flow ID must be a string; got ${typeof id}`);
-        }
+        return this._wait((w) => {
+            if (typeof id !== 'string') {
+                throw new TypeError(`Flow ID must be a string; got ${typeof id}`);
+            }
 
-        return this._wait((w) => ({ id, data: w, size: 1 }), timeout);
+            return ({ id, data: w, size: 1 })
+        }, timeout);
     }
 }
 
