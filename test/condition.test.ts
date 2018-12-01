@@ -1,5 +1,5 @@
-import { Test, Expect } from 'alsatian';
-import { Signal, FairSignal } from '../src/condition';
+import { Expect, Test } from 'alsatian';
+import { FairSignal, Signal } from '../src';
 
 export class SignalTest {
     @Test() async sendUndefined() {

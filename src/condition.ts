@@ -72,7 +72,9 @@ export class Signal<T> extends SignalBase<T, Waiter<T>> {
         super(new Deque<Waiter<T>>());
     }
 
-    wait(timeout?: number) {
+    wait(): Promise<T>;
+    wait(timeout?: number): Promise<T | undefined>;
+    wait(timeout?: number): Promise<T | undefined> {
         return this._wait((w) => w, timeout);
     }
 }
@@ -82,7 +84,13 @@ export class FairSignal<T> extends SignalBase<T, DRRData<Waiter<T>>> {
         super(new DRRQueue<Waiter<T>>());
     }
 
-    wait(id: string, timeout?: number) {
+    wait(id: string): Promise<T>;
+    wait(id: string, timeout?: number): Promise<T | undefined>;
+    wait(id: string, timeout?: number): Promise<T | undefined> {
+        if (typeof id !== 'string') {
+            throw new TypeError(`Flow ID must be a string; got ${typeof id}`);
+        }
+
         return this._wait((w) => ({ id, data: w, size: 1 }), timeout);
     }
 }
@@ -98,6 +106,8 @@ export class Condition {
         return this._signal.notifyAll(true);
     }
 
+    wait(): Promise<true>;
+    wait(timeout?: number): Promise<boolean>;
     wait(timeout?: number): Promise<boolean> {
         return this._signal.wait(timeout).then((value) => value !== undefined);
     }
@@ -114,6 +124,8 @@ export class FairCondition {
         return this._signal.notifyAll(true);
     }
 
+    wait(id: string): Promise<true>;
+    wait(id: string, timeout?: number): Promise<boolean>;
     wait(id: string, timeout?: number): Promise<boolean> {
         return this._signal.wait(id, timeout).then((value) => value !== undefined);
     }

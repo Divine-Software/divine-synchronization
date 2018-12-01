@@ -1,6 +1,7 @@
+import { Expect, Test } from 'alsatian';
+import { DRRData, FairQueue, Queue } from '../src';
+import { BlockingQueue } from '../src/queue';
 import { DRRQueueTest } from './drr-queue.test';
-import { Queue, FairQueue, BlockingQueue, DRRData } from '../src/queue';
-import { Test, Expect } from 'alsatian';
 
 export class QueueTest {
     @Test() normalOrder() {

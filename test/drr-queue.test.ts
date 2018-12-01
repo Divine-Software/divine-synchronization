@@ -1,5 +1,5 @@
-import { DRRQueue, DRRData } from '../src/drr-queue';
-import { Test, Expect } from 'alsatian';
+import { Expect, Test } from 'alsatian';
+import { DRRData, DRRQueue } from '../src';
 import { BackingQueue } from '../src/condition';
 
 export class DRRQueueTest {
