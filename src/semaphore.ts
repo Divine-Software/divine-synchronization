@@ -6,7 +6,7 @@ export class Semaphore {
     constructor(private _value: number) {
     }
 
-    async protect<T>(func: () => Promise<T>): Promise<T> {
+    async protect<T>(func: () => Promise<T> | T): Promise<T> {
         try {
             await this.wait();
             return await func();
@@ -49,7 +49,7 @@ export class Semaphore {
 export class Mutex {
     private _semaphore = new Semaphore(1);
 
-    protect<T>(func: () => Promise<T>): Promise<T> {
+    protect<T>(func: () => Promise<T> | T): Promise<T> {
         return this._semaphore.protect(func);
     }
 
@@ -78,7 +78,7 @@ export class FairSemaphore {
     constructor(private _value: number) {
     }
 
-    async protect<T>(id: string, func: () => Promise<T>): Promise<T> {
+    async protect<T>(id: string, func: () => Promise<T> | T): Promise<T> {
         try {
             await this.wait(id);
             return await func();
@@ -121,7 +121,7 @@ export class FairSemaphore {
 export class FairMutex {
     private _semaphore = new FairSemaphore(1);
 
-    protect<T>(id: string, func: () => Promise<T>): Promise<T> {
+    protect<T>(id: string, func: () => Promise<T> | T): Promise<T> {
         return this._semaphore.protect(id, func);
     }
 
