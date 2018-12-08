@@ -1,4 +1,4 @@
-all:		test
+all:		build
 
 clean:
 	rm -rf lib node_modules coverage .nyc_output

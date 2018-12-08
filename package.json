@@ -8,9 +8,21 @@
   "bugs": "https://github.com/LeviticusMB/divine-synchronization/issues",
   "author": "Martin Blom <martin@blom.org>",
   "license": "MIT",
+  "keywords": [
+    "synchronization", "lock",
+    "signal", "condition", "condition variable",
+    "queue", "blocking queue", "fair queue", "ddr-queue", "deficit round-robin",
+    "semaphore", "fair semaphore", "mutex", "fair mutex",
+    "barrier", "cyclic barrier", "lightswitch", "read-write lock"
+  ],
   "scripts": {
     "test": "make test"
   },
+  "files": [
+    "lib/bundle*",
+    "lib/src",
+    "src"
+  ],
   "dependencies": {
     "denque": "^1.4.0",
     "tslib": "^1.9.3"
