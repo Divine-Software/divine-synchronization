@@ -108,9 +108,11 @@ export class MoreBlockingFairQueueTest {
     @Test() async blockingPriorityRead() {
         const q = new FairQueue<string>();
 
-        setTimeout(() => q.push({ id: '1', data: 'one',   size: 1}), 150);
-        setTimeout(() => q.push({ id: '1', data: 'two',   size: 1}), 150);
-        setTimeout(() => q.push({ id: '2', data: 'three', size: 1}), 150);
+        setTimeout(() => {
+            q.push({ id: '1', data: 'one',   size: 1});
+            q.push({ id: '1', data: 'two',   size: 1});
+            q.push({ id: '2', data: 'three', size: 1});
+        }, 150);
 
         Expect(await q.shiftOrWait(100)).toBe(undefined);
         Expect(await Promise.all([q.shiftOrWait(100), q.shiftOrWait(100), q.shiftOrWait(100), q.shiftOrWait(100)])).toEqual(['one', 'three', 'two', undefined]);
