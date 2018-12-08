@@ -52,3 +52,8 @@ A classical semaphore that can be signaled and waited for. There is also a non-b
 ### `Mutex` and `FairMutex`
 
 Just a semaphore initialized to 1 and with more appropriate method names.
+
+### `Barrier`, `Lightswitch` and `ReadWriteLock`
+
+A few extra primitives taken more or less verbatim from the [The Little Book of
+Semaphores](http://greenteapress.com/wp/semaphores/) by Allen B. Downey. There are no fair variants of these.
