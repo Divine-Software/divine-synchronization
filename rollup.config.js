@@ -14,4 +14,3 @@ export default {
         sourcemap: true,
     },
 }
-x

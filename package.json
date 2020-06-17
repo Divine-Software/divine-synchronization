@@ -9,11 +9,24 @@
   "author": "Martin Blom <martin@blom.org>",
   "license": "MIT",
   "keywords": [
-    "synchronization", "lock",
-    "signal", "condition", "condition variable",
-    "queue", "blocking queue", "fair queue", "ddr-queue", "deficit round-robin",
-    "semaphore", "fair semaphore", "mutex", "fair mutex",
-    "barrier", "cyclic barrier", "lightswitch", "read-write lock"
+    "synchronization",
+    "lock",
+    "signal",
+    "condition",
+    "condition variable",
+    "queue",
+    "blocking queue",
+    "fair queue",
+    "ddr-queue",
+    "deficit round-robin",
+    "semaphore",
+    "fair semaphore",
+    "mutex",
+    "fair mutex",
+    "barrier",
+    "cyclic barrier",
+    "lightswitch",
+    "read-write lock"
   ],
   "scripts": {
     "test": "make test"
@@ -25,16 +38,16 @@
   ],
   "dependencies": {
     "denque": "^1.4.0",
-    "tslib": "^1.9.3"
+    "tslib": "^2.0.0"
   },
   "devDependencies": {
-    "alsatian": "alpha",
+    "alsatian": "3.2.1",
     "coveralls": "^3.0.2",
-    "nyc": "^13.1.0",
-    "rollup": "^0.67.3",
-    "rollup-plugin-commonjs": "^9.2.0",
-    "rollup-plugin-node-resolve": "^3.4.0",
-    "rollup-plugin-sourcemaps": "^0.4.2",
-    "typescript": "^3.1.6"
+    "nyc": "15.1.0",
+    "rollup": "^2.16.1",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-sourcemaps": "^0.6.2",
+    "typescript": "^3.9.5"
   }
 }
