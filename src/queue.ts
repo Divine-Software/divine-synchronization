@@ -84,11 +84,11 @@ export class Queue<T> extends BlockingQueue<T, T> {
         super(new Deque(), capacity);
     }
 
-    _waitForWrite(_data: T, timeout?: number) {
+    protected _waitForWrite(_data: T, timeout?: number) {
         return this._writeCondition.wait(timeout);
     }
 
-    _notifyWriter() {
+    protected _notifyWriter() {
         this._writeCondition.notify();
     }
 }
@@ -100,11 +100,11 @@ export class FairQueue<T> extends BlockingQueue<T, DRRData<T>> {
         super(new DRRQueue<T>(), capacity);
     }
 
-    _waitForWrite(data: DRRData<T>, timeout?: number) {
+    protected _waitForWrite(data: DRRData<T>, timeout?: number) {
         return this._writeCondition.wait(data.id, timeout);
     }
 
-    _notifyWriter() {
+    protected _notifyWriter() {
         this._writeCondition.notify();
     }
 }

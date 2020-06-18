@@ -46,6 +46,14 @@ A condition variable implementation with `notify()`, `notifyAll` and `wait()` me
 
 A trivial extension to the condition variable that allows a value to be passed to the waiter.
 
+***NOTE***: *Don't mistake this for a* Pub/Sub *primitive!* While possible, it's very difficult to use these two
+primitives as event emitters without losing messages. See below instead.
+
+### `PubSub` and `FairPubSub`
+
+A *Pub/Sub* primitive, with configurable capacity, blocking publishing and generator-based subscription, suitable to be
+used in a `for await`-loop.
+
 ### `Semaphore` and `FairSemaphore`
 
 A classical semaphore that can be signaled and waited for. There is also a non-blocking `take()` method available.
