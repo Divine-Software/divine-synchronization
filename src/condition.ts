@@ -14,12 +14,20 @@ interface Waiter<T> {
 }
 
 export class SignalBase<T, W> {
+    private _value: T | undefined;
+
     constructor(private _waiters: BackingQueue<Waiter<T>, W>) {}
+
+    get value(): T | undefined {
+        return this._value;
+    }
 
     notify(value: T): boolean {
         if (value === undefined) {
             throw new TypeError(`Signal cannot send 'undefined'`);
         }
+
+        this._value = value;
 
         for (let waiter = this._waiters.shift(); waiter; waiter = this._waiters.shift()) {
             if (!waiter.aborted) {

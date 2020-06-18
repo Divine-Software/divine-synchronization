@@ -8,6 +8,20 @@ export class SignalTest {
         Expect(() => signal.notify(undefined as any)).toThrowError(TypeError, `Signal cannot send 'undefined'`);
     }
 
+    @Test() async value() {
+        const signal1 = new Signal<string>();
+
+        Expect(signal1.value).not.toBeDefined();
+        signal1.notify('one');
+        Expect(signal1.value).toBe('one');
+
+        const signal2 = new Signal<string>();
+
+        Expect(signal2.value).not.toBeDefined();
+        signal2.notifyAll('all');
+        Expect(signal2.value).toBe('all');
+    }
+
     @Test() async wakeOne() {
         const signal = new Signal<string>();
 
@@ -40,6 +54,20 @@ export class SignalTest {
 }
 
 export class FairSignalTest {
+    @Test() async value() {
+        const signal1 = new FairSignal<string>();
+
+        Expect(signal1.value).not.toBeDefined();
+        signal1.notify('one');
+        Expect(signal1.value).toBe('one');
+
+        const signal2 = new FairSignal<string>();
+
+        Expect(signal2.value).not.toBeDefined();
+        signal2.notifyAll('all');
+        Expect(signal2.value).toBe('all');
+    }
+
     @Test() async wakeOne() {
         const signal = new FairSignal<string>();
 
