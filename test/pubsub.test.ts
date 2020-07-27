@@ -1,5 +1,5 @@
 import { Expect, Test } from 'alsatian';
-import { PubSub, FairPubSub } from '../src/pubsub';
+import { PubSub, FairPubSub } from '../src';
 
 export class PubSubTest {
     @Test() async undefinedFails() {
@@ -79,6 +79,27 @@ export class PubSubTest {
         Expect((await s1.next()).value).toBe('fourth');
         Expect((await s1.next()).value).toBe(undefined);
     }
+
+    @Test() async filters() {
+        const ps = new PubSub<string>();
+        const s1 = ps.subscribe();
+        const s2 = ps.subscribe((s) => s.length > 3);
+        const i1 = s1.next();
+        const i2 = s2.next();
+
+        Expect(ps.publish('one')).toBe(1);
+        Expect(await ps.publishOrWait('two')).toBe(1);
+        Expect(ps.publish('three')).toBe(2);
+        Expect(await ps.publishOrWait('four')).toBe(2);
+
+        Expect((await i1).value).toBe('one');
+        Expect((await s1.next()).value).toBe('two');
+        Expect((await s1.next()).value).toBe('three');
+        Expect((await s1.next()).value).toBe('four');
+
+        Expect((await i2).value).toBe('three');
+        Expect((await s2.next()).value).toBe('four');
+    }
 }
 
 export class FairPubSubTest {
@@ -94,5 +115,19 @@ export class FairPubSubTest {
         Expect((await a1).value).toBe('one');
         Expect((await s1.next()).value).toBe('three');
         Expect((await s1.next()).value).toBe('two');
+    }
+
+    @Test() async filters() {
+        const ps = new FairPubSub<string>();
+        const s1 = ps.subscribe((s) => s.length > 3);
+        const i1 = s1.next();
+
+        Expect(ps.publish({ id: '1', data: 'one', size: 1 })).toBe(0);
+        Expect(await ps.publishOrWait({ id: '1', data: 'two',   size: 1 })).toBe(0);
+        Expect(ps.publish({ id: '1', data: 'three', size: 1 })).toBe(1);
+        Expect(await ps.publishOrWait({ id: '1', data: 'four', size: 1 })).toBe(1);
+
+        Expect((await i1).value).toBe('three');
+        Expect((await s1.next()).value).toBe('four');
     }
 }

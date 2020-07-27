@@ -1,15 +1,33 @@
 import { BlockingQueue, DRRData, FairQueue, Queue } from './queue';
 
+class FilteredQueue<T, W> {
+    constructor(private queue: BlockingQueue<T, W>, private filter: (data: W) => boolean) {
+    }
+
+    push(data: W) {
+        return this.filter(data) ? this.queue.push(data) : null;
+    }
+
+    async pushOrWait(data: W, timeout?: number) {
+        return this.filter(data) ? this.queue.pushOrWait(data, timeout) : null;
+    }
+
+    async shiftOrWait(timeout?: number) {
+        return this.queue.shiftOrWait(timeout);
+    }
+}
+
 abstract class PubSubBase<T, W> {
-    private _topic = new Set<BlockingQueue<T, W>>();
+    private _topic = new Set<FilteredQueue<T, W>>();
 
     publish(data: W): number {
         let result = 0;
 
         for (const queue of this._topic) {
             try {
-                queue.push(data);
-                ++result;
+                if (queue.push(data) !== null) {
+                    ++result;
+                }
             }
             catch (ex) {
                 if (ex instanceof RangeError !== true) {
@@ -24,13 +42,23 @@ abstract class PubSubBase<T, W> {
     async publishOrWait(data: W, timeout?: number): Promise<number> {
         const result = await Promise.all([...this._topic].map((queue) => queue.pushOrWait(data, timeout)));
 
-        return result.filter((res) => res !== undefined).length;
+        return result.filter((res) => res !== undefined && res !== null).length;
     }
 
-    subscribe(): AsyncGenerator<T, void>;
+    subscribe(filter?: (data: T) => boolean): AsyncGenerator<T, void>;
+    subscribe(filter?: (data: T) => boolean, timeout?: number): AsyncGenerator<T | undefined, void>;
     subscribe(timeout?: number): AsyncGenerator<T | undefined, void>;
-    async *subscribe(timeout?: number): AsyncGenerator<T | undefined, void> {
-        const queue = this._createQueue();
+    async *subscribe(filter?: ((data: T) => boolean) | number, timeout?: number): AsyncGenerator<T | undefined, void> {
+        if (typeof filter === 'number') {
+            timeout = filter;
+            filter  = undefined;
+        }
+
+        if (filter === undefined) {
+            filter = () => true;
+        }
+
+        const queue = this._createQueue(filter);
 
         try {
             this._topic.add(queue);
@@ -48,7 +76,7 @@ abstract class PubSubBase<T, W> {
         return this._topic.size;
     }
 
-    protected abstract _createQueue(): BlockingQueue<T, W>;
+    protected abstract _createQueue(filter: (value: T) => boolean): FilteredQueue<T, W>;
 }
 
 export class PubSub<T> extends PubSubBase<T, T> {
@@ -56,8 +84,8 @@ export class PubSub<T> extends PubSubBase<T, T> {
         super();
     }
 
-    protected _createQueue() {
-        return new Queue<T>(this._capacity);
+    protected _createQueue(filter: (value: T) => boolean) {
+        return new FilteredQueue(new Queue<T>(this._capacity), filter);
     }
 }
 
@@ -66,7 +94,7 @@ export class FairPubSub<T> extends PubSubBase<T, DRRData<T>> {
         super();
     }
 
-    protected _createQueue() {
-        return new FairQueue<T>(this._capacity);
+    protected _createQueue(filter: (value: T) => boolean) {
+        return new FilteredQueue(new FairQueue<T>(this._capacity), (data: DRRData<T>) => filter(data.data));
     }
 }
