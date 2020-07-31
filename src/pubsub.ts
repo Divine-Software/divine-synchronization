@@ -48,7 +48,7 @@ abstract class PubSubBase<T, W> {
     subscribe(filter?: (data: T) => boolean): AsyncGenerator<T, void>;
     subscribe(filter?: (data: T) => boolean, timeout?: number): AsyncGenerator<T | undefined, void>;
     subscribe(timeout?: number): AsyncGenerator<T | undefined, void>;
-    async *subscribe(filter?: ((data: T) => boolean) | number, timeout?: number): AsyncGenerator<T | undefined, void> {
+    subscribe(filter?: ((data: T) => boolean) | number, timeout?: number): AsyncGenerator<T | undefined, void> {
         if (typeof filter === 'number') {
             timeout = filter;
             filter  = undefined;
@@ -60,9 +60,13 @@ abstract class PubSubBase<T, W> {
 
         const queue = this._createQueue(filter);
 
-        try {
-            this._topic.add(queue);
+        // Splitting this function ensures the topic queue is present even before AsyncGenerator.next() is called
+        this._topic.add(queue);
+        return this._subscribe(queue, timeout)
+    }
 
+    private async* _subscribe(queue: FilteredQueue<T, W>, timeout: number | undefined) {
+        try {
             while (true) {
                 yield await queue.shiftOrWait(timeout);
             }
