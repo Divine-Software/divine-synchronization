@@ -1,3 +1,6 @@
+NAME		:= $(shell node -p 'require(`./package.json`).name')
+VERSION		:= $(shell node -p 'require(`./package.json`).version')
+
 all:		build
 
 clean:
@@ -13,6 +16,10 @@ build:		prepare
 test:		build
 	yarn run nyc --reporter=lcov --reporter=html alsatian lib/test/*.js
 	yarn run nyc report
+
+tag:
+	@[[ -z "$$(git status --porcelain)" ]] || (git status; false)
+	git tag -s v$(VERSION) -m "$(NAME) v$(VERSION)"
 
 publish:	clean build test
 	@[[ -z "$$(git status --porcelain)" && "$$(git describe)" =~ ^v[0-9]+\.[0-9]+\.[0-9]$$ ]] || (git describe; git status; false)
